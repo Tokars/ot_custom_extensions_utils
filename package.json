@@ -1,21 +1,21 @@
 {
-    "name": "tokar.dev.ot_custom_extensions",
-    "version": "0.0.1",
-    "displayName": "OT Extensions",
-    "description": "C# / Unity types custom extensions.\r\n",
-    "license": "MIT",
-    "publishConfig": {
-        "registry": ""
-    },
-    "samples": [],
-    "author": {
-        "name": "Oleksandr Tokar",
-        "email": "",
-        "url": ""
-    },
-    "repository": {
-        "type": "",
-        "url": ""
-    },
-    "hideInEditor": false
+  "name": "tokar.dev.ot_custom_extensions",
+  "version": "0.0.2",
+  "displayName": "OT Extensions",
+  "description": "C# / Unity types custom extensions.",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": ""
+  },
+  "samples": [],
+  "author": {
+    "name": "Oleksandr Tokar",
+    "email": "",
+    "url": ""
+  },
+  "repository": {
+    "type": "",
+    "url": ""
+  },
+  "hideInEditor": false
 }
