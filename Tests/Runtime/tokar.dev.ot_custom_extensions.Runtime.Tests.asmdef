@@ -1,0 +1,11 @@
+{
+    "name": "tokar.dev.ot_custom_extensions.Runtime.Tests",
+    "references": [
+        "tokar.dev.ot_custom_extensions.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

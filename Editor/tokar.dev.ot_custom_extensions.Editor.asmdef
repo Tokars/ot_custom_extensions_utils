@@ -1,0 +1,11 @@
+{
+    "name": "tokar.dev.ot_custom_extensions.Editor",
+    "references": [
+        "tokar.dev.ot_custom_extensions.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "optionalUnityReferences": []
+}
