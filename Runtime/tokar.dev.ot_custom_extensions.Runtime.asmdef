@@ -1,7 +1,14 @@
 {
     "name": "tokar.dev.ot_custom_extensions.Runtime",
+    "rootNamespace": "OT.Extensions",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "optionalUnityReferences": []
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
