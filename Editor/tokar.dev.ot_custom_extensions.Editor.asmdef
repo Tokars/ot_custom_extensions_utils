@@ -1,5 +1,6 @@
 {
     "name": "tokar.dev.ot_custom_extensions.Editor",
+    "rootNamespace": "OT.Extensions.Editor",
     "references": [
         "tokar.dev.ot_custom_extensions.Runtime"
     ],
@@ -7,5 +8,11 @@
         "Editor"
     ],
     "excludePlatforms": [],
-    "optionalUnityReferences": []
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
