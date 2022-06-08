@@ -1,6 +1,6 @@
 {
     "name": "tokar.dev.ot_custom_extensions.Editor",
-    "rootNamespace": "OT.Extensions.Editor",
+    "rootNamespace": "OT.Extensions",
     "references": [
         "tokar.dev.ot_custom_extensions.Runtime"
     ],
