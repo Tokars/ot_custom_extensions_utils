@@ -6,10 +6,25 @@ namespace OT.Extensions
     public static class EditorContextExtension
     {
         [MenuItem("Assets/Save RenderTexture to file")]
-        public static void SaveRenderTextureToFile()
+        public static void ContextSaveRenderTextureToFile()
         {
             RenderTexture rt = Selection.activeObject as RenderTexture;
+            SaveFile(rt, GetSavePath(rt.name + PNG));
+        }
 
+        public static void Save(this RenderTexture rt, string path, string name)
+        {
+            SaveFile(rt, path+name+PNG);
+        }
+
+        private static void SaveFile(RenderTexture rt, string path)
+        {
+            if (rt == null)
+            {
+                Debug.LogError("Render Texture is null");
+                return;
+            }
+            
             RenderTexture.active = rt;
             Texture2D tex = new Texture2D(rt.width, rt.height, TextureFormat.RGB24, false);
             tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
@@ -18,16 +33,26 @@ namespace OT.Extensions
             byte[] bytes;
             bytes = tex.EncodeToPNG();
 
-            string path = AssetDatabase.GetAssetPath(rt) + ".png";
             System.IO.File.WriteAllBytes(path, bytes);
             AssetDatabase.ImportAsset(path);
-            Debug.Log("Saved to " + path);
+            // Debug.Log("Saved to " + path);
         }
+        
 
         [MenuItem("Assets/Save RenderTexture to file", true)]
-        public static bool SaveRenderTextureToFileValidation()
+        public static bool ContextSaveRenderTextureToFileValidation()
         {
             return Selection.activeObject is RenderTexture;
         }
+        
+        
+        private static string GetSavePath(string preferredName)
+        {
+            var path = EditorUtility.SaveFilePanel("Save Image", "Assets/", preferredName, PNG);
+            return FileUtil.GetProjectRelativePath(path);
+        }
+
+        private const string PNG = ".png";
+
     }
 }
