@@ -12,12 +12,12 @@ namespace OT.Extensions
             SaveFile(rt, GetSavePath(rt.name + PNG));
         }
 
-        public static void Save(this RenderTexture rt, string path, string name)
+        public static void Save(this RenderTexture rt, TextureFormat format, string path, string name)
         {
-            SaveFile(rt, path+name+PNG);
+            SaveFile(rt, path+name+PNG, format);
         }
 
-        private static void SaveFile(RenderTexture rt, string path)
+        private static void SaveFile(RenderTexture rt, string path, TextureFormat format = TextureFormat.ARGB4444)
         {
             if (rt == null)
             {
@@ -26,7 +26,7 @@ namespace OT.Extensions
             }
             
             RenderTexture.active = rt;
-            Texture2D tex = new Texture2D(rt.width, rt.height, TextureFormat.RGB24, false);
+            Texture2D tex = new Texture2D(rt.width, rt.height, format, false);
             tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
             RenderTexture.active = null;
 
