@@ -9,7 +9,7 @@ namespace OT.Extensions
         public static void ContextSaveRenderTextureToFile()
         {
             RenderTexture rt = Selection.activeObject as RenderTexture;
-            SaveFile(rt, GetSavePath(rt.name + PNG));
+            SaveFile(rt, GetSavePath( rt.name + PNG), TextureFormat.RGB24);
         }
 
         public static void Save(this RenderTexture rt, TextureFormat format, string path, string name)
