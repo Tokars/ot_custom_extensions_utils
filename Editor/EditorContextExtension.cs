@@ -5,6 +5,59 @@ namespace OT.Extensions
 {
     public static class EditorContextExtension
     {
+        #region Inspector
+        
+        /// <summary>
+        /// Inspector context: Rename gameobject as script/component.
+        /// </summary>
+        /// <param name="menuCommand">Context menu command.</param>
+        [MenuItem("CONTEXT/Component/RenameAsScript", false, -100)]
+        private static void RenameGameObjectAsScript(MenuCommand menuCommand)
+        {
+            Component c = (Component)menuCommand.context;
+            Undo.RegisterCompleteObjectUndo(c.gameObject, "Player name change");        
+            c.gameObject.name = c.GetType().Name;
+        }
+
+        /// <summary>
+        /// Inspector context: Transform round scale to int.
+        /// </summary>
+        /// <param name="menuCommand">Context menu command.</param>
+
+        [MenuItem("CONTEXT/Transform/RoundScaleToInt", false, -100)]
+        private static void RoundScale(MenuCommand menuCommand)
+        {
+            Transform tr = menuCommand.context as Transform;
+            var inputScale = tr.localScale;
+            tr.localScale = Vector3Int.RoundToInt(tr.localScale);
+
+            var scale = tr.localScale;
+            var x = scale.x * 2;
+
+            x -= scale.y;
+            x -= scale.z;
+
+            if (Mathf.Abs(x) > 0)
+            {
+                var result = EditorUtility.DisplayDialogComplex("Non-uniform scale",
+                    $"Object name: {tr.gameObject.name} \n Input scale: {inputScale}",
+                    "Force apply to uniform",
+                    "Cancel",
+                    "Restore"
+                );
+                if (result == 0)
+                    tr.localScale = new Vector3(scale.x, scale.x, scale.x);
+                else
+                    tr.localScale = inputScale;
+            }
+        }
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Context Assets: Save render texture to picture.  
+        /// </summary>
         [MenuItem("Assets/Save RenderTexture to file")]
         public static void ContextSaveRenderTextureToFile()
         {
