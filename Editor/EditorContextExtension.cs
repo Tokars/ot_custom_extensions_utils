@@ -1,12 +1,14 @@
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace OT.Extensions
 {
     public static class EditorContextExtension
     {
         #region Inspector
-        
+
         /// <summary>
         /// Inspector context: Rename gameobject as script/component.
         /// </summary>
@@ -15,7 +17,7 @@ namespace OT.Extensions
         private static void RenameGameObjectAsScript(MenuCommand menuCommand)
         {
             Component c = (Component)menuCommand.context;
-            Undo.RegisterCompleteObjectUndo(c.gameObject, "Player name change");        
+            Undo.RegisterCompleteObjectUndo(c.gameObject, "Player name change");
             c.gameObject.name = c.GetType().Name;
         }
 
@@ -23,7 +25,6 @@ namespace OT.Extensions
         /// Inspector context: Transform round scale to int.
         /// </summary>
         /// <param name="menuCommand">Context menu command.</param>
-
         [MenuItem("CONTEXT/Transform/RoundScaleToInt", false, -100)]
         private static void RoundScale(MenuCommand menuCommand)
         {
@@ -52,9 +53,56 @@ namespace OT.Extensions
             }
         }
 
+        /// <summary>
+        /// Context: Component Move to top.
+        /// </summary>
+        /// <param name="menuCommand">Context menu command.</param>
+        [MenuItem("CONTEXT/Component/Move To Top")]
+        private static void MoveToTop(MenuCommand menuCommand)
+        {
+            Component c = (Component)menuCommand.context;
+            Component[] allComponents = c.GetComponents<Component>();
+            int iOffset = 0;
+            for (int i = 0; i < allComponents.Length; i++)
+            {
+                if (allComponents[i] == c)
+                {
+                    iOffset = i;
+                    break;
+                }
+            }
+
+            for (int i = 0; i < iOffset - 1; i++)
+                UnityEditorInternal.ComponentUtility.MoveComponentUp(c);
+
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        }
+        /// <summary>
+        /// Context: Component Move to bottom.
+        /// </summary>
+        /// <param name="menuCommand">Context menu command.</param>
+        [MenuItem("CONTEXT/Component/Move To Bottom")]
+        private static void MoveToBottom(MenuCommand menuCommand)
+        {
+            Component c = (Component)menuCommand.context;
+            Component[] allComponents = c.GetComponents<Component>();
+            int iOffset = 0;
+            for (int i = 0; i < allComponents.Length; i++)
+                if (allComponents[i] == c)
+                {
+                    iOffset = i;
+                    break;
+                }
+
+            for (; iOffset < allComponents.Length; iOffset++)
+                UnityEditorInternal.ComponentUtility.MoveComponentDown(c);
+
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        }
+
         #endregion
-        
-        
+
+
         /// <summary>
         /// Context Assets: Save render texture to picture.  
         /// </summary>
@@ -62,12 +110,12 @@ namespace OT.Extensions
         public static void ContextSaveRenderTextureToFile()
         {
             RenderTexture rt = Selection.activeObject as RenderTexture;
-            SaveFile(rt, GetSavePath( rt.name + PNG), TextureFormat.RGB24);
+            SaveFile(rt, GetSavePath(rt.name + PNG), TextureFormat.RGB24);
         }
 
         public static void Save(this RenderTexture rt, TextureFormat format, string path, string name)
         {
-            SaveFile(rt, path+name+PNG, format);
+            SaveFile(rt, path + name + PNG, format);
         }
 
         private static void SaveFile(RenderTexture rt, string path, TextureFormat format = TextureFormat.ARGB4444)
@@ -77,7 +125,7 @@ namespace OT.Extensions
                 Debug.LogError("Render Texture is null");
                 return;
             }
-            
+
             RenderTexture.active = rt;
             Texture2D tex = new Texture2D(rt.width, rt.height, format, false);
             tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
@@ -90,15 +138,15 @@ namespace OT.Extensions
             AssetDatabase.ImportAsset(path);
             // Debug.Log("Saved to " + path);
         }
-        
+
 
         [MenuItem("Assets/Save RenderTexture to file", true)]
         public static bool ContextSaveRenderTextureToFileValidation()
         {
             return Selection.activeObject is RenderTexture;
         }
-        
-        
+
+
         private static string GetSavePath(string preferredName)
         {
             var path = EditorUtility.SaveFilePanel("Save Image", "Assets/", preferredName, PNG);
@@ -106,6 +154,5 @@ namespace OT.Extensions
         }
 
         private const string PNG = ".png";
-
     }
 }
