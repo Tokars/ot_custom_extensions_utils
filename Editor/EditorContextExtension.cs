@@ -7,13 +7,26 @@ namespace OT.Extensions
 {
     public static class EditorContextExtension
     {
+        #region Editor menu: File
+
+        /// <summary>
+        /// Ping active scene in Project section.
+        /// </summary>
+        [MenuItem("File/Ping Active Scene  &s", false, 0)]
+        private static void PingActiveScene()
+        {
+            Selection.activeObject = AssetDatabase.LoadAssetAtPath<Object>(SceneManager.GetActiveScene().path);
+            EditorGUIUtility.PingObject(Selection.activeObject);
+        }
+        #endregion
+        
         #region Inspector
 
         /// <summary>
         /// Inspector context: Rename gameobject as script/component.
         /// </summary>
         /// <param name="menuCommand">Context menu command.</param>
-        [MenuItem("CONTEXT/Component/RenameAsScript", false, -100)]
+        [MenuItem("CONTEXT/Component/Rename Object As Component", false, -100)]
         private static void RenameGameObjectAsScript(MenuCommand menuCommand)
         {
             Component c = (Component)menuCommand.context;
@@ -57,7 +70,7 @@ namespace OT.Extensions
         /// Context: Component Move to top.
         /// </summary>
         /// <param name="menuCommand">Context menu command.</param>
-        [MenuItem("CONTEXT/Component/Move To Top")]
+        [MenuItem("CONTEXT/Component/Move To Top",  false, -100)]
         private static void MoveToTop(MenuCommand menuCommand)
         {
             Component c = (Component)menuCommand.context;
@@ -81,7 +94,7 @@ namespace OT.Extensions
         /// Context: Component Move to bottom.
         /// </summary>
         /// <param name="menuCommand">Context menu command.</param>
-        [MenuItem("CONTEXT/Component/Move To Bottom")]
+        [MenuItem("CONTEXT/Component/Move To Bottom",  false, -100)]
         private static void MoveToBottom(MenuCommand menuCommand)
         {
             Component c = (Component)menuCommand.context;
