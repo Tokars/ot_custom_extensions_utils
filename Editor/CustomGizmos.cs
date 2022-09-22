@@ -17,7 +17,7 @@ namespace OT.Extensions
             }
         }
 
-        public static void DrawGizmoCurve(Vector3[] points, Color path, Color dot)
+        public static void DrawGizmoCurve(Vector3[] points, Color path, Color dot, float radius = 1)
         {
             if (points == null) return;
 
@@ -30,7 +30,7 @@ namespace OT.Extensions
                 Gizmos.DrawLine(start, target);
 
                 Gizmos.color = dot;
-                Gizmos.DrawSphere(points[j - 1], 1);
+                Gizmos.DrawSphere(points[j - 1], radius);
             }
         }
 
