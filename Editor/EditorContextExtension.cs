@@ -18,8 +18,9 @@ namespace OT.Extensions
             Selection.activeObject = AssetDatabase.LoadAssetAtPath<Object>(SceneManager.GetActiveScene().path);
             EditorGUIUtility.PingObject(Selection.activeObject);
         }
+
         #endregion
-        
+
         #region Inspector
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace OT.Extensions
         [MenuItem("CONTEXT/Component/Rename Object As Component", false, -100)]
         private static void RenameGameObjectAsScript(MenuCommand menuCommand)
         {
-            Component c = (Component)menuCommand.context;
+            Component c = (Component) menuCommand.context;
             Undo.RegisterCompleteObjectUndo(c.gameObject, "Player name change");
             c.gameObject.name = c.GetType().Name;
         }
@@ -66,14 +67,20 @@ namespace OT.Extensions
             }
         }
 
+        [MenuItem("GameObject/Clear", false, -100)]
+        private static void ClearChild()
+        {
+            Selection.gameObjects[0].transform.Clear();
+        }
+
         /// <summary>
         /// Context: Component Move to top.
         /// </summary>
         /// <param name="menuCommand">Context menu command.</param>
-        [MenuItem("CONTEXT/Component/Move To Top",  false, -100)]
+        [MenuItem("CONTEXT/Component/Move To Top", false, -100)]
         private static void MoveToTop(MenuCommand menuCommand)
         {
-            Component c = (Component)menuCommand.context;
+            Component c = (Component) menuCommand.context;
             Component[] allComponents = c.GetComponents<Component>();
             int iOffset = 0;
             for (int i = 0; i < allComponents.Length; i++)
@@ -90,14 +97,15 @@ namespace OT.Extensions
 
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         }
+
         /// <summary>
         /// Context: Component Move to bottom.
         /// </summary>
         /// <param name="menuCommand">Context menu command.</param>
-        [MenuItem("CONTEXT/Component/Move To Bottom",  false, -100)]
+        [MenuItem("CONTEXT/Component/Move To Bottom", false, -100)]
         private static void MoveToBottom(MenuCommand menuCommand)
         {
-            Component c = (Component)menuCommand.context;
+            Component c = (Component) menuCommand.context;
             Component[] allComponents = c.GetComponents<Component>();
             int iOffset = 0;
             for (int i = 0; i < allComponents.Length; i++)

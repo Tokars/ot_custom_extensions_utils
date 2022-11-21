@@ -9,10 +9,11 @@ namespace OT.Extensions
             var count = transform.childCount - 1;
             for (var i = count; i >= 0; i--)
             {
-                if (Application.isEditor)
-                    Object.DestroyImmediate(transform.GetChild(i).gameObject);
-                else
-                    Object.Destroy(transform.GetChild(i).gameObject);
+#if UNITY_EDITOR
+                UnityEditor.Undo.DestroyObjectImmediate(transform.GetChild(i).gameObject);
+#else
+                Object.Destroy(transform.GetChild(i).gameObject);
+#endif
             }
         }
     }
