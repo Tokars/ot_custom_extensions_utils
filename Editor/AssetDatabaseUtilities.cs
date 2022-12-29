@@ -126,7 +126,7 @@ namespace OT.Extensions
         }
 
 
-        private static T CreateScriptable<T>(string path) where T : ScriptableObject
+        public static T CreateScriptable<T>(string path) where T : ScriptableObject
         {
             if (DirectoryExists(path) == false)
                 CreateFolder(path);
