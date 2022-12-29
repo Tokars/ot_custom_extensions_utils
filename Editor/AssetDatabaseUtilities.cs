@@ -128,8 +128,8 @@ namespace OT.Extensions
 
         private static T CreateScriptable<T>(string path) where T : ScriptableObject
         {
-            if (Directory.Exists(path) == false)
-                Directory.CreateDirectory(path);
+            if (DirectoryExists(path) == false)
+                CreateFolder(path);
 
             string filePath = $"{path}{typeof(T).Name}{Paths.AssetExt}";
 

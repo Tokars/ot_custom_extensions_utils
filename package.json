@@ -1,6 +1,6 @@
 {
   "name": "tokar.dev.ot_custom_extensions",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "displayName": "OT Extensions & Utils",
   "description": "C# / Unity types custom extensions and utils.",
   "license": "MIT",
