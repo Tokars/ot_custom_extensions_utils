@@ -1,6 +1,6 @@
 namespace OT.Extensions
 {
-    internal class Paths
+    public class Paths
     {
         public static string AssemblyDefExt = ".asmdef";
         public static string PrefabExt = ".prefab";
