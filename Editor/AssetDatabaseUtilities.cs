@@ -25,7 +25,7 @@ namespace OT.Extensions
             return Path.Combine(GetProjectRoot(), path);
         }
 
-        internal static string CreateFolder(string pathFolder)
+        public static string CreateFolder(string pathFolder)
         {
             string newFolder = Path.Combine(pathFolder);
             Directory.CreateDirectory(newFolder);
