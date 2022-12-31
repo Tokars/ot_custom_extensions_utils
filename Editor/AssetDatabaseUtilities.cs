@@ -27,9 +27,8 @@ namespace OT.Extensions
 
         public static string CreateFolder(string pathFolder)
         {
-            string newFolder = Path.Combine(pathFolder);
-            Directory.CreateDirectory(newFolder);
-            return newFolder;
+            Directory.CreateDirectory(pathFolder);
+            return pathFolder;
         }
 
         public static bool DirectoryExists(string path)
