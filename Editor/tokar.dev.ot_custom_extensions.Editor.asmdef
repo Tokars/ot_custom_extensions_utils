@@ -1,8 +1,8 @@
 {
-    "name": "OT Extensions & Utils Editor",
+    "name": "OT Extensions and Utils Editor",
     "rootNamespace": "OT.Extensions",
     "references": [
-        "OT Extensions & Utils Runtime"
+        "OT Extensions and Utils Runtime"
     ],
     "includePlatforms": [
         "Editor"

@@ -1,5 +1,5 @@
 {
-    "name": "OT Extensions & Utils Runtime",
+    "name": "OT Extensions and Utils Runtime",
     "rootNamespace": "OT.Extensions",
     "references": [],
     "includePlatforms": [],

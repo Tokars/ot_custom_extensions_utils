@@ -35,6 +35,27 @@ namespace OT.Extensions
         {
             return Directory.Exists(path);
         }
+        
+        /// <summary>
+        /// Editor project window util.
+        /// </summary>
+        /// <returns>path of selected Project directory.</returns>
+        public static string GetPathSelectedDir()
+        {
+            string result = string.Empty;
+            UnityEngine.Object[] objs = Selection.GetFiltered<UnityEngine.Object>(SelectionMode.Assets);
+            foreach (UnityEngine.Object obj in objs)
+            {
+                string path = AssetDatabase.GetAssetPath(obj);
+                if (!string.IsNullOrEmpty(path) && Directory.Exists(path))
+                {
+                    result = path;
+                    Debug.Log(result);
+                    break;
+                }
+            }
+            return result;
+        }
 
         public static void CopyDirectory(string sourceDirName, string destDirName, bool copySubDirs)
         {
