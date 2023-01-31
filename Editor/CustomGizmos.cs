@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -5,10 +6,10 @@ namespace OT.Extensions
 {
     public static class CustomGizmos
     {
-        public static void DrawGizmoDirection(Vector3[] points, Vector3[] directions, float rayLength, Color ray,
+        public static void DrawGizmoDirection(IList<Vector3> points, Vector3[] directions, float rayLength, Color ray,
             Color source)
         {
-            for (int i = 0; i < points.Length; i++)
+            for (int i = 0; i < points.Count; i++)
             {
                 Gizmos.color = source;
                 Gizmos.DrawWireCube(points[i], Vector3.one * 0.32F);
@@ -17,11 +18,11 @@ namespace OT.Extensions
             }
         }
 
-        public static void DrawGizmoCurve(Vector3[] points, Color path, Color dot, float radius = 1)
+        public static void DrawGizmoCurve(IList<Vector3> points, Color path, Color dot, float radius = 1)
         {
             if (points == null) return;
 
-            for (int j = 1; j < points.Length; j++)
+            for (int j = 1; j < points.Count; j++)
             {
                 Gizmos.color = path;
 
@@ -32,6 +33,21 @@ namespace OT.Extensions
                 Gizmos.color = dot;
                 Gizmos.DrawSphere(points[j - 1], radius);
             }
+        }
+
+        private static readonly GUIStyle labelGUIStyle = new GUIStyle();
+
+        /// <summary>
+        /// Draw editor label.
+        /// </summary>
+        /// <param name="pos">label position.</param>
+        /// <param name="str">label text.</param>
+        /// <param name="color">label color.</param>
+        public static void DrawLabel(Vector3 pos, string str, Color color)
+        {
+            labelGUIStyle.normal.textColor = color;
+            labelGUIStyle.fontSize = 9;
+            Handles.Label(pos, str, labelGUIStyle);
         }
 
         private static Color32 _textColor;
