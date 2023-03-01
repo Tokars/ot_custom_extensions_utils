@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace OT.Extensions
         /// <summary>
         /// Ping active scene in Project section.
         /// </summary>
-        [MenuItem("File/Ping Active Scene  &s", false, 0)]
+        [MenuItem("Assets/Ping Active Scene  &s", false, 0)]
         private static void PingActiveScene()
         {
             Selection.activeObject = AssetDatabase.LoadAssetAtPath<Object>(SceneManager.GetActiveScene().path);
@@ -67,6 +68,12 @@ namespace OT.Extensions
             }
         }
 
+        [MenuItem("GameObject/Clear", true, -100)]
+        private static bool ClearChildValidate()
+        {
+            return Selection.activeObject is Transform;
+        }
+        
         [MenuItem("GameObject/Clear", false, -100)]
         private static void ClearChild()
         {
@@ -175,5 +182,24 @@ namespace OT.Extensions
         }
 
         private const string PNG = ".png";
+        
+        
+        [MenuItem("Assets/Find missing components")]
+        private static void FindMissingComponents()
+        {
+            string[] paths = AssetDatabase.GetAllAssetPaths()
+                .Where(path => path.EndsWith(".prefab", System.StringComparison.OrdinalIgnoreCase)).ToArray();
+
+            foreach (var path in paths)
+            {
+                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+
+                foreach (var component in prefab.GetComponentsInChildren<Component>())
+                {
+                    if (component == null)
+                        Debug.Log($"Prefab has missing component: {path}", prefab);
+                }
+            }
+        }
     }
 }

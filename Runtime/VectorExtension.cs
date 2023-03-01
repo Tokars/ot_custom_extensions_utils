@@ -6,7 +6,8 @@ namespace CustomExtension
     {
         public static Vector3 RandomRange(this Vector3 vector)
         {
-            return new Vector3(Random.Range(-vector.x, vector.x), Random.Range(-vector.y, vector.y), Random.Range(-vector.z, vector.z));
+            return new Vector3(Random.Range(-vector.x, vector.x), Random.Range(-vector.y, vector.y),
+                Random.Range(-vector.z, vector.z));
         }
 
         public static Vector2 RandomRange(this Vector2 vector)
@@ -16,14 +17,15 @@ namespace CustomExtension
 
         public static Vector3 Clamp(this Vector3 vector, float minValue, float maxValue)
         {
-            return new Vector3(Mathf.Clamp(vector.x, minValue, maxValue), Mathf.Clamp(vector.y, minValue, maxValue), Mathf.Clamp(vector.z, minValue, maxValue));
+            return new Vector3(Mathf.Clamp(vector.x, minValue, maxValue), Mathf.Clamp(vector.y, minValue, maxValue),
+                Mathf.Clamp(vector.z, minValue, maxValue));
         }
 
         public static Vector2 Clamp(this Vector2 vector, float minValue, float maxValue)
         {
             return new Vector2(Mathf.Clamp(vector.x, minValue, maxValue), Mathf.Clamp(vector.y, minValue, maxValue));
         }
-        
+
         public static Vector3 BezierInterpolateV3(Vector3 p0, Vector3 c0, Vector3 p1, float t)
         {
             Vector3 p0c0 = Vector3.LerpUnclamped(p0, c0, t);
@@ -53,5 +55,36 @@ namespace CustomExtension
             return Vector3.LerpUnclamped(x, y, t);
         }
 
+        public enum BasicDirections
+        {
+            Forward,
+            Back,
+            Up,
+            Bottom,
+            Left,
+            Right
+        }
+
+        public static Vector3 SpaceVectorByDirection(this Transform transform, BasicDirections dir)
+        {
+            switch (dir)
+            {
+                case BasicDirections.Forward:
+                    return transform.TransformVector(Vector3.forward);
+                case BasicDirections.Back:
+                    return transform.TransformVector(Vector3.back);
+                case BasicDirections.Up:
+                    return transform.TransformVector(Vector3.up);
+                case BasicDirections.Bottom:
+                    return transform.TransformVector(Vector3.down);
+                case BasicDirections.Left:
+                    return transform.TransformVector(Vector3.left);
+                case BasicDirections.Right:
+                    return transform.TransformVector(Vector3.right);
+
+                default:
+                    return transform.TransformVector(Vector3.forward);
+            }
+        }
     }
 }
