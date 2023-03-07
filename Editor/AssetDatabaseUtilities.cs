@@ -35,6 +35,10 @@ namespace OT.Extensions
         {
             return Directory.Exists(path);
         }
+        public static bool DirectoryIsEmpty(string path)
+        {
+            return Directory.GetFiles(path).Length > 0;
+        }
         
         /// <summary>
         /// Editor project window util.
