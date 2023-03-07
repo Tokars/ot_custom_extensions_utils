@@ -37,7 +37,7 @@ namespace OT.Extensions
         }
         public static bool DirectoryIsEmpty(string path)
         {
-            return Directory.GetFiles(path).Length > 0;
+            return Directory.GetFiles(path).Length <= 0;
         }
         
         /// <summary>
