@@ -49,7 +49,7 @@ namespace OT.Extensions
         /// Renames serialized gameobjects as component's fields declared.  
         /// </summary>
         [MenuItem("CONTEXT/Component/Rename Fields As Declared", false, -100)]
-        public static void RenameFieldsAsDefined(MenuCommand menuCommand)
+        public static void RenameFieldsAsDeclared(MenuCommand menuCommand)
         {
             var component = (MonoBehaviour) menuCommand.context;
 
@@ -57,15 +57,13 @@ namespace OT.Extensions
                 .GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
             foreach (var info in fisInfos)
             {
-                if (IsSerializedField(info.GetCustomAttributes()))
-                {
-                    // Debug.Log(info.Name);
-                    var value = info.GetValue(component);
-                    if (value is Component == false) continue;
-                    var go = value as Component;
-                    Undo.RegisterCompleteObjectUndo(go, "renamed serialized fields as defined");
-                    (value as Component).name = info.Name.ToPascalCase();
-                }
+                if (IsSerializedField(info.GetCustomAttributes()) == false) continue;
+
+                var value = info.GetValue(component);
+                if (value is Component == false) continue;
+                var go = value as Component;
+                Undo.RegisterCompleteObjectUndo(go, "renamed serialized fields as declared");
+                (value as Component).name = info.Name.ToPascalCase();
             }
 
             bool IsSerializedField(IEnumerable<Attribute> attr)
@@ -79,7 +77,7 @@ namespace OT.Extensions
         }
 
         [MenuItem("CONTEXT/Component/Rename Fields As Declared", true)]
-        private static bool RenameFieldsAsDefinedValidation(MenuCommand menuCommand)
+        private static bool RenameFieldsAsDeclaredValidation(MenuCommand menuCommand)
         {
             return menuCommand.context is MonoBehaviour;
         }
