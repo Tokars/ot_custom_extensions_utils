@@ -5,12 +5,22 @@ namespace OT.Extensions
 {
     public static class StringExtension
     {
-        /// <summary>
-        /// Format strings: regex char: "_" to space.
-        /// </summary>
-        /// <param name="title">string_string</param>
-        /// <returns>formated: string string</returns>
-        public static string FormatEnumTitle(this string title)
+        public static string ToCamelCase(this string s)
+        {
+            var x = s.Replace("_", "");
+            if (x.Length == 0) return "null";
+            x = Regex.Replace(x, "([A-Z])([A-Z]+)($|[A-Z])",
+                m => m.Groups[1].Value + m.Groups[2].Value.ToLower() + m.Groups[3].Value);
+            return char.ToLower(x[0]) + x.Substring(1);
+        }
+
+        public static string ToPascalCase(this string s)
+        {
+            var x = ToCamelCase(s);
+            return char.ToUpper(x[0]) + x.Substring(1);
+        }
+        
+        public static string SnakeCaseToSpace(this string title)
         {
             string pattern = "_";
             string replacement = " ";

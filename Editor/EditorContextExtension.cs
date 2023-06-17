@@ -1,8 +1,12 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 namespace OT.Extensions
 {
@@ -17,6 +21,7 @@ namespace OT.Extensions
         private static void PingActiveScene()
         {
             Selection.activeObject = AssetDatabase.LoadAssetAtPath<Object>(SceneManager.GetActiveScene().path);
+            if (Selection.activeObject == null) return;
             EditorGUIUtility.PingObject(Selection.activeObject);
         }
 
@@ -24,17 +29,79 @@ namespace OT.Extensions
 
         #region Inspector
 
+        [MenuItem("CONTEXT/Component/Rm. All Components", false, -101)]
+        public static void ClearComponents(MenuCommand menuCommand)
+        {
+            var component = (Component) menuCommand.context;
+
+            var all = component.GetComponents<Component>();
+
+            for (int i = all.Length - 1; i > 0; i--)
+            {
+                var comp = all[i];
+                if (comp is Transform) continue;
+                GameObject.DestroyImmediate(comp);
+            }
+        }
+
+
         /// <summary>
-        /// Inspector context: Rename gameobject as script/component.
+        /// Renames serialized gameobjects as component's fields declared.  
+        /// </summary>
+        [MenuItem("CONTEXT/Component/Rename Fields As Declared", false, -100)]
+        public static void RenameFieldsAsDefined(MenuCommand menuCommand)
+        {
+            var component = (MonoBehaviour) menuCommand.context;
+
+            FieldInfo[] fisInfos = component.GetType()
+                .GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+            foreach (var info in fisInfos)
+            {
+                if (IsSerializedField(info.GetCustomAttributes()))
+                {
+                    // Debug.Log(info.Name);
+                    var value = info.GetValue(component);
+                    if (value is Component == false) continue;
+                    var go = value as Component;
+                    Undo.RegisterCompleteObjectUndo(go, "renamed serialized fields as defined");
+                    (value as Component).name = info.Name.ToPascalCase();
+                }
+            }
+
+            bool IsSerializedField(IEnumerable<Attribute> attr)
+            {
+                foreach (var attribute in attr)
+                    if (attribute is SerializeField)
+                        return true;
+
+                return false;
+            }
+        }
+
+        [MenuItem("CONTEXT/Component/Rename Fields As Declared", true)]
+        private static bool RenameFieldsAsDefinedValidation(MenuCommand menuCommand)
+        {
+            return menuCommand.context is MonoBehaviour;
+        }
+
+        /// <summary>
+        /// Inspector context: Rename component as script/component.
         /// </summary>
         /// <param name="menuCommand">Context menu command.</param>
-        [MenuItem("CONTEXT/Component/Rename Object As Component", false, -100)]
+        [MenuItem("CONTEXT/Component/Rename As Component", false, -100)]
         private static void RenameGameObjectAsScript(MenuCommand menuCommand)
         {
-            Component c = (Component) menuCommand.context;
-            Undo.RegisterCompleteObjectUndo(c.gameObject, "Player name change");
-            c.gameObject.name = c.GetType().Name;
+            Component component = (Component) menuCommand.context;
+            Undo.RegisterCompleteObjectUndo(component.gameObject, "gameObject name change");
+            component.gameObject.name = component.GetType().Name;
         }
+
+        [MenuItem("CONTEXT/Component/Rename As Component", true)]
+        private static bool RenameGameObjectAsScriptValidation(MenuCommand menuCommand)
+        {
+            return (Component) menuCommand.context != null;
+        }
+
 
         /// <summary>
         /// Inspector context: Transform round scale to int.
@@ -73,7 +140,7 @@ namespace OT.Extensions
         {
             return Selection.activeObject is Transform;
         }
-        
+
         [MenuItem("GameObject/Clear", false, -100)]
         private static void ClearChild()
         {
@@ -182,8 +249,8 @@ namespace OT.Extensions
         }
 
         private const string PNG = ".png";
-        
-        
+
+
         [MenuItem("Assets/Find missing components")]
         private static void FindMissingComponents()
         {
