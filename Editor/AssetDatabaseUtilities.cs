@@ -12,6 +12,28 @@ namespace OT.Extensions
     /// </summary>
     public static class AssetDatabaseUtilities
     {
+        /// <summary>
+        /// EDITOR load assets by filter and paths.
+        /// </summary>
+        /// <param name="searchFilter">filters as in editor "t:prefab" for example.</param>
+        /// <param name="paths">project directory paths.</param>
+        /// <typeparam name="T">unity object type based.</typeparam>
+        /// <returns>array of T[]</returns>
+        public static T[] LoadFilteredAssetsByPaths<T>(string searchFilter, string[] paths) where T : UnityEngine.Object
+        {
+            string[] guids = AssetDatabase.FindAssets(searchFilter, paths);
+            var assets = new T[guids.Length];
+            for (var i = 0; i < guids.Length; i++)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                assets[i] = AssetDatabase.LoadAssetAtPath<T>(path);
+                // Debug.Log($"asset path : {path}");
+            }
+
+            return assets;
+        }
+        
+        
         #region Path
 
         public static string GetProjectRoot()
