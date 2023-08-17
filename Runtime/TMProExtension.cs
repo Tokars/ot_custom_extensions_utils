@@ -10,13 +10,14 @@ namespace OT.Extensions
             dropdown.ClearDp();
             dropdown.onValueChanged.AddListener(arg0 => listener?.Invoke(items[arg0]));
             dropdown.AddOptions(items.Select(i => i.ToString()).ToList());
+            dropdown.interactable = true;
         }
 
         public static void ClearDp(this TMPro.TMP_Dropdown dropdown)
         {
             dropdown.onValueChanged.RemoveAllListeners();
             dropdown.options.Clear();
+            dropdown.interactable = false;
         }
-
     }
 }
