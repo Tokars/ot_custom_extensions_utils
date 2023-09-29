@@ -1,6 +1,6 @@
 {
   "name": "tokar.dev.ot_custom_extensions",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "displayName": "OT Extensions and Utils",
   "description": "C# / Unity types custom extensions and utils.",
   "license": "MIT",
@@ -18,5 +18,8 @@
     "url": ""
   },
   "hideInEditor": false,
-  "type": "library"
+  "type": "library",
+  "dependencies": {
+    "com.unity.textmeshpro": "3.0.6"
+  }
 }
