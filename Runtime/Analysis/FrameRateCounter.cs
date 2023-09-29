@@ -2,7 +2,6 @@ using System;
 using System.Text;
 using TMPro;
 using Unity.Profiling;
-using UnityEditor;
 using UnityEngine;
 
 namespace OT.Extensions.Analysis
@@ -25,7 +24,7 @@ namespace OT.Extensions.Analysis
 
         private void OnEnable()
         {
-            _version = PlayerSettings.bundleVersion;
+            _version = Application.version;
             _totalReservedMemoryRecorder = ProfilerRecorder.StartNew(ProfilerCategory.Memory, "Total Reserved Memory");
             _gcReservedMemoryRecorder = ProfilerRecorder.StartNew(ProfilerCategory.Memory, "GC Reserved Memory");
             _systemUsedMemoryRecorder = ProfilerRecorder.StartNew(ProfilerCategory.Memory, "System Used Memory");
